@@ -20,4 +20,11 @@ class Product extends Model
         return $this->belongsTo('App\Models\TypeProduct');
     }
 
+    public function providers()
+    {
+        return $this->belongsToMany(Provider::class);
+    }
+
+    
+
 }

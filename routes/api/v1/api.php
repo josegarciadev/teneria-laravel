@@ -67,6 +67,20 @@ Route::prefix('/admin')->group(function(){
             Route::patch('/update/{id}','App\Http\Controllers\EmployeeLogController@UpdateEmployeeLog');
             Route::delete('/delete/{id}','App\Http\Controllers\EmployeeLogController@DeleteEmployeeLog');
         });
+        /*
+        * Line
+        */
+        Route::prefix('/line')->group(function(){
+            Route::get('/all','App\Http\Controllers\LineController@GetAllLine');
+            Route::get('/getOne/{id}','App\Http\Controllers\LineController@GetLine');
+            Route::post('/create','App\Http\Controllers\LineController@CreateLine');
+            Route::patch('/update/{id}','App\Http\Controllers\LineController@UpdateLine');
+            Route::delete('/delete/{id}','App\Http\Controllers\LineController@DeleteLine');
+        });
+
+        Route::prefix('/lineProd')->group(function(){
+            Route::post('/add','App\Http\Controllers\LineProductController@addLineProduct');
+        });
 
         /*
         * Products
@@ -77,6 +91,8 @@ Route::prefix('/admin')->group(function(){
             Route::post('/create','App\Http\Controllers\ProductController@CreateProduct');
             Route::patch('/update/{id}','App\Http\Controllers\ProductController@UpdateProduct');
             Route::delete('/delete/{id}','App\Http\Controllers\ProductController@DeleteProduct');
+
+            Route::post('/prodprov','App\Http\Controllers\ProductController@addProductProvider');
         });
         /*
         * Provider

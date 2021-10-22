@@ -60,4 +60,17 @@ class ProductController extends Controller
             throw $th;
         }
     }
+
+    public function addProductProvider(Request $request){
+
+        $product = Product::findOrFail($request->product_id);
+
+        $product->providers()->syncWithoutDetaching($request->provider_id);
+
+        try {
+            return response()->json(['message'=>'Agregado con exito'], 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
