@@ -24,7 +24,8 @@ class DepartmentController extends Controller
     }
 
     public function GetAllDepartment(Request $request){
-        return Department::all();
+        return Department::select()->orderBy('id', 'asc')
+        ->get();;
     }
 
     public function GetDeparment(Request $request, $id){

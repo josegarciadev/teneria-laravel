@@ -110,6 +110,8 @@ Route::prefix('/admin')->group(function(){
             Route::delete('/delete/{id}','App\Http\Controllers\ProductController@DeleteProduct');
 
             Route::post('/prodprov','App\Http\Controllers\ProductController@addProductProvider');
+            Route::get('/prodprov/all','App\Http\Controllers\ProductController@GetAllProdProv');
+            Route::post('/prodprov/delete','App\Http\Controllers\ProductController@deleteProdProv');
         });
         /*
         * Provider

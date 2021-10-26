@@ -10,7 +10,7 @@ class ProviderController extends Controller
 {
     public function CreateProvider(Request $request){
         $data = $request->validate([
-            'name' => 'required|string|min:4|unique:Providers'
+            'name' => 'required|string'
         ]);
 
         Provider::create($data);
@@ -22,7 +22,8 @@ class ProviderController extends Controller
     }
 
     public function GetAllProvider(Request $request){
-        return Provider::where('delete',false)->get();
+        return Provider::select()->orderBy('id', 'asc')
+        ->get();
     }
 
     public function GetProvider(Request $request, $id){
@@ -35,6 +36,7 @@ class ProviderController extends Controller
         $Provider = Provider::findOrFail($id);
 
         $Provider->name = $request->name;
+        $Provider->delete = $request->delete;
         $Provider->save();
         try {
             return response()->json(['message'=>'Actualizado con exito'], 200);

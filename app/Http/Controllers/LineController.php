@@ -22,9 +22,9 @@ class LineController extends Controller
     }
 
     public function GetAllLine(Request $request){
-        return Line::select('lines.id','lines.name as line_name','lines.department_id','departments.name as department_name')
+        return Line::select('lines.id','lines.name as line_name','lines.department_id','lines.delete','departments.name as department_name')
                     ->join('departments','lines.department_id','=','departments.id')
-                    ->where('lines.delete',false)->get();
+                    ->orderBy('id', 'asc')->get();
     }
 
     public function GetLine(Request $request, $id){
@@ -38,6 +38,7 @@ class LineController extends Controller
 
         $Line->name = $request->name;
         $Line->department_id = $request->department_id;
+        $Line->delete = $request->delete;
         $Line->save();
         try {
             return response()->json(['message'=>'Actualizado con exito'], 200);

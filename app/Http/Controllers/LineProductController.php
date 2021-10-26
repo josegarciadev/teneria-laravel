@@ -27,7 +27,14 @@ class LineProductController extends Controller
     }
     
     public function getAllLineProduct(){
-        return LineProduct::all();
+        return LineProduct::select('line_products.id','line_products.created_at','line_products.line_id','line_products.product_provider_id','line_products.stock','lines.name as line_name','products.name as product_name','providers.name as provider_name','departments.name as department_name','line_products.delete')
+                            ->join('lines','line_products.line_id','=','lines.id')
+                            ->join('departments','lines.department_id','=','departments.id')
+                            ->join('product_provider','line_products.product_provider_id','=','product_provider.id')
+                            ->join('products','product_provider.product_id','=','products.id')
+                            ->join('providers','product_provider.provider_id','=','providers.id')
+                            ->orderBy('id', 'asc')
+                            ->get();
     }
 
     public function GetLineProduct(Request $request, $id){
@@ -41,6 +48,7 @@ class LineProductController extends Controller
         $LineProduct->product_provider_id = $request->product_provider_id;
         $LineProduct->line_id = $request->line_id;
         $LineProduct->stock = $request->stock;
+        $LineProduct->delete = $request->delete;
         $LineProduct->save();
         try {
             return response()->json(['message'=>'Actualizado con exito'], 200);

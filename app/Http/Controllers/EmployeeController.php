@@ -30,7 +30,8 @@ class EmployeeController extends Controller
     }
 
     public function GetAllEmployee(Request $request){
-        $Employees =Employee::where('delete',false)->get();
+        $Employees =Employee::select()->orderBy('id', 'asc')
+        ->get();;
 
         $Employees->map(function($value){
             $value->gender;
@@ -56,6 +57,7 @@ class EmployeeController extends Controller
         $Employee->phone_number = $request->phone_number;
         $Employee->gender_id = $request->gender_id;
         $Employee->department_id = $request->department_id;
+        $Employee->delete = $request->delete;
         $Employee->save();
         try {
             return response()->json(['message'=>'Actualizado con exito'], 200);

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
-
+use App\Models\ProductProvider;
 class ProductController extends Controller
 {
     public function CreateProduct(Request $request){
@@ -24,11 +24,17 @@ class ProductController extends Controller
     }
 
     public function GetAllProduct(Request $request){
-        $product = Product::where('delete',false)->get();
+        $product = Product::select()->orderBy('id', 'asc')
+        ->get();
         $product->map(function($value){
             $value->typeProduct;
         });
         return $product;
+    }
+
+    public function GetAllProdProv(Request $request){
+        $productprov = ProductProvider::select('product_provider.id','product_provider.product_id','product_provider.provider_id','providers.name as provider_name','products.name as product_name')->join('products','product_provider.product_id','=','products.id')->join('providers','product_provider.provider_id','=','providers.id')->get();
+        return $productprov;
     }
 
     public function GetProduct(Request $request, $id){
@@ -43,6 +49,7 @@ class ProductController extends Controller
         $Product->code = $request->code;
         $Product->name = $request->name;
         $Product->type_product_id = $request->type_product_id;
+        $Product->delete = $request->delete;
         $Product->save();
         try {
             return response()->json(['message'=>'Actualizado con exito'], 200);
@@ -74,4 +81,18 @@ class ProductController extends Controller
             throw $th;
         }
     }
+    public function deleteProdProv(Request $request){
+
+        $product = Product::findOrFail($request->product_id);
+
+        $product->providers()->detach($request->provider_id);
+
+        try {
+            return response()->json(['message'=>'eliminado con exito'], 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
 }
