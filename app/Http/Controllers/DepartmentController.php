@@ -48,7 +48,8 @@ class DepartmentController extends Controller
 
     public function DeleteDeparment(Request $request, $id){
         $department = Department::findOrFail($id);
-        $department->delete();
+        $department->delete=true;
+        $department->save();
         try {
             return response()->json(['message'=>'Eliminado con exito'], 200);
         } catch (\Throwable $th) {

@@ -33,4 +33,7 @@ class Employee extends Model
         return $this->hasMany('App\Models\Employee','employee_id');
     }
     
+    public function lineProductLogs(){
+        return $this->hasMany('App\Models\LineProductLogs','employee_id');
+    }
 }

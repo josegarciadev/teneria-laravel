@@ -14,7 +14,7 @@ class CreateLineProductsTable extends Migration
     public function up()
     {
         Schema::create('line_products', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id')->unsigned();
             $table->unsignedBigInteger('product_provider_id');
             $table->foreign('product_provider_id')
                     ->references('id')
@@ -26,6 +26,7 @@ class CreateLineProductsTable extends Migration
                     ->on('lines')
                     ->onDelete('cascade');
             $table->integer('stock');
+            $table->boolean('delete')->default(false);
             $table->timestamps();
         });
     }

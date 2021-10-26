@@ -24,7 +24,7 @@ class ProductController extends Controller
     }
 
     public function GetAllProduct(Request $request){
-        $product = Product::all();
+        $product = Product::where('delete',false)->get();
         $product->map(function($value){
             $value->typeProduct;
         });
@@ -53,7 +53,8 @@ class ProductController extends Controller
 
     public function DeleteProduct(Request $request, $id){
         $Product = Product::findOrFail($id);
-        $Product->delete();
+        $Product->delete =true;
+        $Product->save();
         try {
             return response()->json(['message'=>'Eliminado con exito'], 200);
         } catch (\Throwable $th) {

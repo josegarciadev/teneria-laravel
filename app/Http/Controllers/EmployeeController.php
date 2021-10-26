@@ -11,7 +11,7 @@ class EmployeeController extends Controller
 {
     public function CreateEmployee(Request $request){
         $data = $request->validate([
-            'dni'=>'required|string|unique:Employees',
+            'dni'=>'required|string',
             'name' => 'required|string',
             'date_birth'=>'required',
             'ingress'=>'required',
@@ -30,7 +30,7 @@ class EmployeeController extends Controller
     }
 
     public function GetAllEmployee(Request $request){
-        $Employees =Employee::all();
+        $Employees =Employee::where('delete',false)->get();
 
         $Employees->map(function($value){
             $value->gender;
@@ -66,7 +66,8 @@ class EmployeeController extends Controller
 
     public function DeleteEmployee(Request $request, $id){
         $Employee = Employee::findOrFail($id);
-        $Employee->delete();
+        $Employee->delete=true;
+        $Employee->save();
         try {
             return response()->json(['message'=>'Eliminado con exito'], 200);
         } catch (\Throwable $th) {

@@ -22,7 +22,7 @@ class ProviderController extends Controller
     }
 
     public function GetAllProvider(Request $request){
-        return Provider::all();
+        return Provider::where('delete',false)->get();
     }
 
     public function GetProvider(Request $request, $id){
@@ -45,7 +45,8 @@ class ProviderController extends Controller
 
     public function DeleteProvider(Request $request, $id){
         $Provider = Provider::findOrFail($id);
-        $Provider->delete();
+        $Provider->delete = true;
+        $Provider->save();
         try {
             return response()->json(['message'=>'Eliminado con exito'], 200);
         } catch (\Throwable $th) {

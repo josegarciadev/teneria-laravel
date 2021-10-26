@@ -77,9 +77,26 @@ Route::prefix('/admin')->group(function(){
             Route::patch('/update/{id}','App\Http\Controllers\LineController@UpdateLine');
             Route::delete('/delete/{id}','App\Http\Controllers\LineController@DeleteLine');
         });
-
+        /*
+        * lineProd
+        */
         Route::prefix('/lineProd')->group(function(){
-            Route::post('/add','App\Http\Controllers\LineProductController@addLineProduct');
+            Route::get('/all','App\Http\Controllers\LineProductController@getAllLineProduct');
+            Route::get('/getOne/{id}','App\Http\Controllers\LineProductController@GetLineProduct');
+            Route::post('/create','App\Http\Controllers\LineProductController@addLineProduct');
+            Route::patch('/update/{id}','App\Http\Controllers\LineProductController@UpdateLineProduct');
+            Route::delete('/delete/{id}','App\Http\Controllers\LineProductController@DeleteLineProduct');
+        });
+
+        /*
+        * LineProdLogs
+        */
+        Route::prefix('/lineProdLog')->group(function(){
+            Route::get('/all','App\Http\Controllers\LineProductLogController@getAllLineProductLog');
+            Route::get('/getOne/{id}','App\Http\Controllers\LineProductLogController@GetLineProductLog');
+            Route::post('/create','App\Http\Controllers\LineProductLogController@addLineProductLog');
+            Route::patch('/update/{id}','App\Http\Controllers\LineProductLogController@UpdateLineProductLog');
+            Route::delete('/delete/{id}','App\Http\Controllers\LineProductLogController@DeleteLineProductLog');
         });
 
         /*
@@ -105,6 +122,11 @@ Route::prefix('/admin')->group(function(){
             Route::delete('/delete/{id}','App\Http\Controllers\ProviderController@DeleteProvider');
         });
         
+        Route::prefix('/user')->group(function(){
+            Route::get('/all','App\Http\Controllers\UserController@getAllUser');
+            Route::patch('/update/{id}','App\Http\Controllers\UserController@updateUser');
+            Route::delete('/delete/{id}','App\Http\Controllers\UserController@deleteUser');
+        });
     });
 });
 

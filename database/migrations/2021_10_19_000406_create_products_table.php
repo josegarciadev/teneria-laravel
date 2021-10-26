@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
                     ->references('id')
                     ->on('type_products')
                     ->onDelete('cascade');
+            $table->boolean('delete')->default(false);
             $table->timestamps();
         });
     }

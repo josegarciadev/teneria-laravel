@@ -53,6 +53,8 @@ class ResetDatabaseCommand extends Command
         $this->info('Genders seeder has been executed');
         Artisan::call('db:seed', ['--class' => 'EmployeeSceneSeeder']);
         $this->info('EmployeeScene seeder has been executed');
+        Artisan::call('db:seed', ['--class' => 'LineProductSceneSeeder']);
+        $this->info('LineProductScene seeder has been executed');
         Artisan::call('optimize:clear');
         $this->info('Cache has been cleared');
     }

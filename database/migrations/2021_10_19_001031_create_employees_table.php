@@ -31,6 +31,7 @@ class CreateEmployeesTable extends Migration
                     ->references('id')
                     ->on('departments')
                     ->onDelete('cascade');
+                    $table->boolean('delete')->default(false);
             $table->timestamps();
         });
     }

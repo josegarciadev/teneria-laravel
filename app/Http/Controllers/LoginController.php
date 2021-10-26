@@ -22,7 +22,10 @@ class LoginController extends Controller
         if (Auth::attempt($login)) {
             $user = Auth::user();
 
-            $token = $user->createToken('authToken');
+            if($user->delete){
+                return response(['message' => 'Invalid Login, User delete'], 401);
+            }else{
+                $token = $user->createToken('authToken');
             $accessToken = $token->accessToken;
 
             if ($request->get('remember_me')) {
@@ -42,6 +45,8 @@ class LoginController extends Controller
                 "roles" => $user->getRoleNames(),
                 "permissions" => $user->getAllPermissions()
             ], 200);
+            }
+            
         } else {
             return response(['message' => 'Invalid Login'], 401);
         }

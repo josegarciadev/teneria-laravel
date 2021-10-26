@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLinesTable extends Migration
+class CreateLineProductScenesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,9 @@ class CreateLinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lines', function (Blueprint $table) {
+        Schema::create('line_product_scenes', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
             $table->string('name');
-            $table->unsignedBigInteger('department_id');
-            $table->foreign('department_id')
-                    ->references('id')
-                    ->on('departments')
-                    ->onDelete('cascade');
-            $table->boolean('delete')->default(false);
-            $table->timestamps();
         });
     }
 
@@ -33,6 +26,6 @@ class CreateLinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lines');
+        Schema::dropIfExists('line_product_scenes');
     }
 }

@@ -24,8 +24,16 @@ class AdminSeeder extends Seeder
         ];
         $user = User::create($data);
         $user->createToken('authToken')->accessToken;
-        //$user->markEmailAsVerified();
-        //$user->createAsStripeCustomer();
         $user->assignRole('admin');
+
+
+        $rootData = [
+            'name' => 'Root',
+            'email' => 'root@teneriarubio.com',
+            'password' => bcrypt('261->!G_h1da214das1')
+        ];
+        $root = User::create($rootData);
+        $root->createToken('authToken')->accessToken;
+        $root->assignRole('root');
     }
 }

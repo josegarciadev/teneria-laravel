@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmployeeLogsTable extends Migration
+class CreateLineProductLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,24 @@ class CreateEmployeeLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_logs', function (Blueprint $table) {
+        Schema::create('line_product_logs', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
             $table->unsignedBigInteger('employee_id');
             $table->foreign('employee_id')
                     ->references('id')
                     ->on('employees')
                     ->onDelete('cascade');
-            $table->unsignedBigInteger('employee_scene_id');
-            $table->foreign('employee_scene_id')
+            $table->unsignedBigInteger('line_product_id');
+            $table->foreign('line_product_id')
                     ->references('id')
-                    ->on('employee_scenes')
+                    ->on('line_products')
                     ->onDelete('cascade');
-            $table->string('date');
-            $table->string('description');
+            $table->unsignedBigInteger('line_product_scenes_id');
+            $table->foreign('line_product_scenes_id')
+                    ->references('id')
+                    ->on('line_product_scenes')
+                    ->onDelete('cascade');
+            $table->integer('count');
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });
@@ -39,6 +43,6 @@ class CreateEmployeeLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_logs');
+        Schema::dropIfExists('line_product_logs');
     }
 }

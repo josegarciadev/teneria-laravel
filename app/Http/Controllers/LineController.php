@@ -24,7 +24,7 @@ class LineController extends Controller
     public function GetAllLine(Request $request){
         return Line::select('lines.id','lines.name as line_name','lines.department_id','departments.name as department_name')
                     ->join('departments','lines.department_id','=','departments.id')
-                    ->get();
+                    ->where('lines.delete',false)->get();
     }
 
     public function GetLine(Request $request, $id){
@@ -48,7 +48,8 @@ class LineController extends Controller
 
     public function DeleteLine(Request $request, $id){
         $Line = Line::findOrFail($id);
-        $Line->delete();
+        $Line->delete=true;
+        $Line->save();
         try {
             return response()->json(['message'=>'Eliminado con exito'], 200);
         } catch (\Throwable $th) {

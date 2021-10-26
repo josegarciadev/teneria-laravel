@@ -24,7 +24,7 @@ class EmployeeLogController extends Controller
     }
 
     public function GetAllEmployeeLog(Request $request){
-        $EmployeeLog = EmployeeLog::all();
+        $EmployeeLog = EmployeeLog::where('delete',false)->get();
         $EmployeeLog->map(function($value){
             $value->employeeScene;
             $value->employee;
@@ -56,7 +56,8 @@ class EmployeeLogController extends Controller
 
     public function DeleteEmployeeLog(Request $request, $id){
         $EmployeeLog = EmployeeLog::findOrFail($id);
-        $EmployeeLog->delete();
+        $EmployeeLog->delete=true;
+        $EmployeeLog->save();
         try {
             return response()->json(['message'=>'Eliminado con exito'], 200);
         } catch (\Throwable $th) {

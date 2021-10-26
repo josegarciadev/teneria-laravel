@@ -24,4 +24,8 @@ class LineProduct extends Model
     public function product(){
         return $this->belongsTo('App\Models\Product');
     }
+
+    public function lineProductLogs(){
+        return $this->hasMany('App\Models\LineProductLog','line_product_id');
+    }
 }
