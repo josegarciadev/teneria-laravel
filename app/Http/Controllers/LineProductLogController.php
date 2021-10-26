@@ -28,7 +28,7 @@ class LineProductLogController extends Controller
         ->join('lines','line_products.line_id','=','lines.id')
         ->join('product_provider','line_products.product_provider_id','=','product_provider.id')
         ->join('products','product_provider.product_id','=','products.id')
-        ->orderBy('id', 'asc')->get();;
+        ->orderBy('id', 'asc')->get();
     }
 
     public function GetLineProductLog(Request $request, $id){
