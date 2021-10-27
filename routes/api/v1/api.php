@@ -45,6 +45,48 @@ Route::prefix('/PDF')->group(function(){
     Route::get('/productsProviderPdf','App\Http\Controllers\ProductController@getPDFProductProvider');
     Route::get('/providerPdf','App\Http\Controllers\ProviderController@getPDFProvider');
 });
+
+Route::prefix('/statistics')->group(function(){
+    Route::get('/getAll','App\Http\Controllers\StatisticsController@getStatistics');
+
+});
+
+Route::prefix('logs')->group(function(){
+    Route::group(['middleware' => ['auth:api','role:admin|root|user']], function () {
+        /*
+        * employeeLogs
+        */
+        Route::prefix('/employeeLogs')->group(function(){
+            Route::get('/all','App\Http\Controllers\EmployeeLogController@GetAllEmployeeLog');
+            Route::get('/getOne/{id}','App\Http\Controllers\EmployeeLogController@GetEmployeeLog');
+            Route::post('/create','App\Http\Controllers\EmployeeLogController@CreateEmployeeLog');
+            Route::patch('/update/{id}','App\Http\Controllers\EmployeeLogController@UpdateEmployeeLog');
+            Route::delete('/delete/{id}','App\Http\Controllers\EmployeeLogController@DeleteEmployeeLog');
+        });
+
+        
+        /*
+        * LineProdLogs
+        */
+        Route::prefix('/employee')->group(function(){
+            Route::get('/all','App\Http\Controllers\EmployeeController@GetAllEmployee');
+        });
+        
+        Route::prefix('/lineProd')->group(function(){
+            Route::get('/all','App\Http\Controllers\LineProductController@getAllLineProduct');
+        });
+
+        Route::prefix('/lineProdLog')->group(function(){
+            Route::get('/all','App\Http\Controllers\LineProductLogController@getAllLineProductLog');
+            Route::get('/getOne/{id}','App\Http\Controllers\LineProductLogController@GetLineProductLog');
+            Route::post('/create','App\Http\Controllers\LineProductLogController@addLineProductLog');
+            Route::patch('/update/{id}','App\Http\Controllers\LineProductLogController@UpdateLineProductLog');
+            Route::delete('/delete/{id}','App\Http\Controllers\LineProductLogController@DeleteLineProductLog');
+        });
+    });
+        
+});
+
 Route::prefix('/admin')->group(function(){
     Route::group(['middleware' => ['auth:api','role:admin|root']], function () {
 
@@ -63,23 +105,13 @@ Route::prefix('/admin')->group(function(){
         * Employees
         */
         Route::prefix('/employee')->group(function(){
-            Route::get('/all','App\Http\Controllers\EmployeeController@GetAllEmployee');
             Route::get('/getOne/{id}','App\Http\Controllers\EmployeeController@GetEmployee');
             Route::post('/create','App\Http\Controllers\EmployeeController@CreateEmployee');
             Route::patch('/update/{id}','App\Http\Controllers\EmployeeController@UpdateEmployee');
             Route::delete('/delete/{id}','App\Http\Controllers\EmployeeController@DeleteEmployee');
         });
     
-        /*
-        * Employeeslogs
-        */
-        Route::prefix('/employeeLogs')->group(function(){
-            Route::get('/all','App\Http\Controllers\EmployeeLogController@GetAllEmployeeLog');
-            Route::get('/getOne/{id}','App\Http\Controllers\EmployeeLogController@GetEmployeeLog');
-            Route::post('/create','App\Http\Controllers\EmployeeLogController@CreateEmployeeLog');
-            Route::patch('/update/{id}','App\Http\Controllers\EmployeeLogController@UpdateEmployeeLog');
-            Route::delete('/delete/{id}','App\Http\Controllers\EmployeeLogController@DeleteEmployeeLog');
-        });
+        
         /*
         * Line
         */
@@ -94,23 +126,13 @@ Route::prefix('/admin')->group(function(){
         * lineProd
         */
         Route::prefix('/lineProd')->group(function(){
-            Route::get('/all','App\Http\Controllers\LineProductController@getAllLineProduct');
+            
             Route::get('/getOne/{id}','App\Http\Controllers\LineProductController@GetLineProduct');
             Route::post('/create','App\Http\Controllers\LineProductController@addLineProduct');
             Route::patch('/update/{id}','App\Http\Controllers\LineProductController@UpdateLineProduct');
             Route::delete('/delete/{id}','App\Http\Controllers\LineProductController@DeleteLineProduct');
         });
 
-        /*
-        * LineProdLogs
-        */
-        Route::prefix('/lineProdLog')->group(function(){
-            Route::get('/all','App\Http\Controllers\LineProductLogController@getAllLineProductLog');
-            Route::get('/getOne/{id}','App\Http\Controllers\LineProductLogController@GetLineProductLog');
-            Route::post('/create','App\Http\Controllers\LineProductLogController@addLineProductLog');
-            Route::patch('/update/{id}','App\Http\Controllers\LineProductLogController@UpdateLineProductLog');
-            Route::delete('/delete/{id}','App\Http\Controllers\LineProductLogController@DeleteLineProductLog');
-        });
 
         /*
         * Products

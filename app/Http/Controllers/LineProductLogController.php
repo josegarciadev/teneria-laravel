@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\LineProductLog;
 use Barryvdh\DomPDF\Facade as PDF;
-
+use App\Models\LineProduct;
 class LineProductLogController extends Controller
 {
     public function addLineProductLog(Request $request){
@@ -17,8 +17,30 @@ class LineProductLogController extends Controller
             "count"=>'required'
         ]);
        
-         $product_provider = LineProductLog::create($data);
-         return response()->json(['message'=>'Agregado con exito'], 200 );
+        $lineProduct = LineProduct::findOrFail($request->line_product_id);
+
+        if($lineProduct){
+
+            if($request->line_product_scenes_id==2){
+               if( $lineProduct->stock < $request->count){
+                    return response()->json(['message'=>'No puede ser mayor a la cantidad existente'], 400 );
+               }else{
+                $lineProduct->stock = $lineProduct->stock - $request->count;
+                $lineProduct->save();
+               }    
+            }else if($request->line_product_scenes_id==1){
+                $lineProduct->stock = $lineProduct->stock + $request->count;
+                $lineProduct->save();
+            }
+            $product_provider = LineProductLog::create($data);
+            return response()->json(['message'=>'Agregado con exito'], 200 );
+        }else{
+            return response()->json(['message'=>'Linea Producto no existe'], 400 );
+        }
+         
+
+
+         
     }
     
     public function getAllLineProductLog(){
