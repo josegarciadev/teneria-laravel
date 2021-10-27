@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EmployeeLog;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class EmployeeLogController extends Controller
 {
@@ -64,5 +65,15 @@ class EmployeeLogController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function getPDFEmployeeLogs(Request $request){
+        $EmployeeLog = EmployeeLog::select()->orderBy('id', 'asc')->get();;
+        $EmployeeLog->map(function($value){
+            $value->employee;
+        });
+        view()->share('employeesLogs', $EmployeeLog);
+        $pdf = PDF::loadView('pdf_employeesLog', $EmployeeLog);
+        return $pdf->download('pdf_employeesLog_'.now().'.pdf');
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductProvider;
+use Barryvdh\DomPDF\Facade as PDF;
 class ProductController extends Controller
 {
     public function CreateProduct(Request $request){
@@ -94,5 +95,20 @@ class ProductController extends Controller
         }
     }
 
+    public function getPDFProduct(Request $request){
+        $product = Product::select('products.name','products.id','products.code','products.delete','products.created_at','type_products.name as type')->join('type_products','products.type_product_id','=','type_products.id')->orderBy('products.id', 'asc')
+        ->get();
 
+        view()->share('product', $product);
+        $pdf = PDF::loadView('pdf_product', $product);
+        return $pdf->download('pdf_product_'.now().'.pdf');
+    }
+
+    public function getPDFProductProvider(Request $request){
+        $productprov = ProductProvider::select('product_provider.id','product_provider.product_id','product_provider.provider_id','providers.name as provider_name','products.name as product_name')->join('products','product_provider.product_id','=','products.id')->join('providers','product_provider.provider_id','=','providers.id')->get();
+
+        view()->share('productprov', $productprov);
+        $pdf = PDF::loadView('pdf_productProd', $productprov);
+        return $pdf->download('pdf_productProd'.now().'.pdf');
+    }
 }

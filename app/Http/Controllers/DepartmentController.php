@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Department;
-
+use Barryvdh\DomPDF\Facade as PDF;
 class DepartmentController extends Controller
 {
     
@@ -25,7 +25,7 @@ class DepartmentController extends Controller
 
     public function GetAllDepartment(Request $request){
         return Department::select()->orderBy('id', 'asc')
-        ->get();;
+        ->get();
     }
 
     public function GetDeparment(Request $request, $id){
@@ -58,4 +58,11 @@ class DepartmentController extends Controller
         }
     }
 
+    public function getPDFDepartment(Request $request){
+        $departments = Department::select()->orderBy('id', 'asc')
+        ->get();
+        view()->share('departments', $departments);
+        $pdf = PDF::loadView('pdf_departments', $departments);
+        return $pdf->download('pdf_departments_'.now().'.pdf');
+    }
 }

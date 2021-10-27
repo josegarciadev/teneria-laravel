@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class UserController extends Controller
 {
@@ -53,5 +54,17 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function getPDFUsers(Request $request){
+        $users = User::select()->orderBy('id', 'asc')
+                        ->get();
+
+        $users->map(function ($user) {
+             $user->getRoleNames();
+        });
+        view()->share('users', $users);
+        $pdf = PDF::loadView('pdf_users', $users);
+        return $pdf->download('users_'.now().'.pdf');
     }
 }

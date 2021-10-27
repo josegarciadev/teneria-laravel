@@ -33,8 +33,21 @@ Route::prefix('/user')->group(function(){
     Route::post('/register','App\Http\Controllers\LoginController@register');
 });
 
+Route::prefix('/PDF')->group(function(){
+    Route::get('/usersPdf','App\Http\Controllers\UserController@getPDFUsers');
+    Route::get('/departmentsPdf','App\Http\Controllers\DepartmentController@getPDFDepartment');
+    Route::get('/employeesPdf','App\Http\Controllers\EmployeeController@getPDFEmployee');
+    Route::get('/employeesLogsPdf','App\Http\Controllers\EmployeeLogController@getPDFEmployeeLogs');
+    Route::get('/linesPdf','App\Http\Controllers\LineController@getPDFLines');
+    Route::get('/linesProductsPdf','App\Http\Controllers\LineProductController@getPDFLineProduct');
+    Route::get('/linesProductsLogsPdf','App\Http\Controllers\LineProductLogController@getPDFLineProductLog');
+    Route::get('/productsPdf','App\Http\Controllers\ProductController@getPDFProduct');
+    Route::get('/productsProviderPdf','App\Http\Controllers\ProductController@getPDFProductProvider');
+    Route::get('/providerPdf','App\Http\Controllers\ProviderController@getPDFProvider');
+});
 Route::prefix('/admin')->group(function(){
     Route::group(['middleware' => ['auth:api','role:admin|root']], function () {
+
         /*
         * Departments
         */

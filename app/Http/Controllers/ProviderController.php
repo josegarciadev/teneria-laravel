@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Provider;
-
+use Barryvdh\DomPDF\Facade as PDF;
 class ProviderController extends Controller
 {
     public function CreateProvider(Request $request){
@@ -54,5 +54,14 @@ class ProviderController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function getPDFProvider(Request $request){
+        $provider = Provider::select()->orderBy('id', 'asc')
+        ->get();
+
+        view()->share('provider', $provider);
+        $pdf = PDF::loadView('pdf_provider', $provider);
+        return $pdf->download('pdf_provider_'.now().'.pdf');
     }
 }

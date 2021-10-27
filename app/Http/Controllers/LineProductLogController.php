@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LineProductLog;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class LineProductLogController extends Controller
 {
@@ -60,5 +61,18 @@ class LineProductLogController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+    public function getPDFLineProductLog(Request $request){
+        $LineProductLog =  LineProductLog::select('line_product_logs.id','line_product_logs.employee_id','line_product_logs.created_at','line_product_logs.count','lines.name as line_name','products.name as product_name','line_product_logs.delete','line_product_scenes.name as type','employees.name as employee_name','line_product_logs.line_product_id','line_product_logs.line_product_scenes_id')
+                    ->join('line_products','line_product_logs.line_product_id','=','line_products.id')
+                    ->join('employees','line_product_logs.employee_id','=','employees.id')
+                    ->join('line_product_scenes','line_product_logs.line_product_scenes_id','=','line_product_scenes.id')
+                    ->join('lines','line_products.line_id','=','lines.id')
+                    ->join('product_provider','line_products.product_provider_id','=','product_provider.id')
+                    ->join('products','product_provider.product_id','=','products.id')
+                    ->orderBy('id', 'asc')->get();
+        view()->share('lineProductLog', $LineProductLog);
+        $pdf = PDF::loadView('pdf_lineProductLogs', $LineProductLog);
+        return $pdf->download('pdf_lineProductLogs_'.now().'.pdf');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Employee;
-
+use Barryvdh\DomPDF\Facade as PDF;
 
 class EmployeeController extends Controller
 {
@@ -75,5 +75,18 @@ class EmployeeController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function getPDFEmployee(Request $request){
+        $Employees =Employee::select()->orderBy('id', 'asc')
+        ->get();;
+
+        $Employees->map(function($value){
+            $value->gender;
+            $value->department;
+        });
+        view()->share('employees', $Employees);
+        $pdf = PDF::loadView('pdf_employees', $Employees);
+        return $pdf->download('pdf_employees_'.now().'.pdf');
     }
 }

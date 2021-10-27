@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Line;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class LineController extends Controller
 {
@@ -56,5 +57,14 @@ class LineController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+    public function getPDFLines(Request $request){
+        $line = Line::select('lines.id','lines.name as line_name','lines.department_id','lines.delete','departments.name as department_name')
+                    ->join('departments','lines.department_id','=','departments.id')
+                    ->orderBy('id', 'asc')->get();
+
+        view()->share('line', $line);
+        $pdf = PDF::loadView('pdf_line', $line);
+        return $pdf->download('pdf_line_'.now().'.pdf');
     }
 }
