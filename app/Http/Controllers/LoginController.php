@@ -70,8 +70,21 @@ class LoginController extends Controller
         ]);
     }
 
+    public function registerAdmin(Request $request){
+        $data = $request->validate([
+            'email'=>'required|string|email',
+            'password'=>'required|string|min:8',
+            'name'=> 'required|string|min:8'
+        ]);
 
-    public function test(){
-        return 'test';
+        $data['password'] = bcrypt($data['password']);
+        $user = User::create($data)->assignRole('admin');
+        
+        $accessToken = $user->createToken('authToken')->accessToken;
+        return response([
+            'user'=> $user,
+            'access_token'=>$accessToken
+        ]);
     }
+
 }

@@ -86,6 +86,19 @@ Route::prefix('logs')->group(function(){
     });
         
 });
+Route::prefix('/ROOT')->group(function(){
+    Route::group(['middleware' => ['auth:api','role:root']], function () {
+        /*
+        * Audit
+        */
+        Route::prefix('/audit')->group(function(){
+            Route::get('/all','App\Http\Controllers\AuditController@getAllAudit');
+        });
+        Route::prefix('/user')->group(function(){
+            Route::post('/createAdmin','App\Http\Controllers\LoginController@registerAdmin');
+        });
+    });
+});
 
 Route::prefix('/admin')->group(function(){
     Route::group(['middleware' => ['auth:api','role:admin|root']], function () {

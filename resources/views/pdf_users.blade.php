@@ -150,12 +150,17 @@ td.text-right {
 .text-center{
     text-align: center;
 }
+.invoice-logo {
+            height: 80px;
+            width: auto;
+          }
     </style>
 </head>
 
 <body>
     <h2 class="text-center">Teneria Rubio C.A</h2>
-    <h3 class="text-center">Reporte Usuarios</h3>
+    <img class="invoice-logo" src="{{"http://127.0.0.1:8000/logo-maquillate-blue.png"}}" alt="" />
+    <h3 class="text-center">Reporte Usuarios </h3>
     <table>
         <thead>
             <tr>
