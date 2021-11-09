@@ -21,6 +21,10 @@ class EmployeeController extends Controller
             'department_id'=>'required',
         ]);
 
+        $employee = Employee::where('dni',$request->dni)->first();
+        if($employee){
+            return response()->json(['message'=>'DNI OCUPADO'], 400);
+        }
         Employee::create($data);
         try {
             return response()->json(['message'=>'Registrado con exito'], 200);
