@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Entrada/Salida Lineas Productos {{now()}}</title>
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
         body {
   font-family: "Roboto", helvetica, arial, sans-serif;
@@ -14,167 +14,35 @@
   text-rendering: optimizeLegibility;
 }
 
-div.table-title {
-   display: block;
-  margin: auto;
-  max-width: 600px;
-  padding:5px;
-  width: 100%;
-}
-
-.table-title h3 {
-   color: #fafafa;
-   font-size: 15px;
-   font-weight: 400;
-   font-style:normal;
-   font-family: "Roboto", helvetica, arial, sans-serif;
-   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-   text-transform:uppercase;
-}
-
-
-/*** Table Styles **/
-
-.table-fill {
-  background: white;
-  border-radius:3px;
-  border-collapse: collapse;
-  height: 320px;
-  margin: auto;
-  max-width: 600px;
-  padding:5px;
-  width: 100%;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  animation: float 5s infinite;
-}
- 
-th {
-  color:#D5DDE5;;
-  background:#1b1e24;
-  border-bottom:4px solid #9ea7af;
-  border-right: 1px solid #343a45;
-  font-size:14px;
-  font-weight: 100;
-  padding:24px;
-  text-align:left;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  vertical-align:middle;
-}
-
-th:first-child {
-  border-top-left-radius:3px;
-}
- 
-th:last-child {
-  border-top-right-radius:3px;
-  border-right:none;
-}
-  
-tr {
-  border-top: 1px solid #C1C3D1;
-  border-bottom: 1px solid #C1C3D1;
-  color:#666B85;
-  font-size:28px;
-  font-weight:normal;
-  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
-}
- 
-tr:hover td {
-  background:#4E5066;
-  color:#FFFFFF;
-  border-top: 1px solid #22262e;
-}
- 
-tr:first-child {
-  border-top:none;
-}
-
-tr:last-child {
-  border-bottom:none;
-}
- 
-tr:nth-child(odd) td {
-  background:#EBEBEB;
-}
- 
-tr:nth-child(odd):hover td {
-  background:#4E5066;
-}
-
-tr:last-child td:first-child {
-  border-bottom-left-radius:3px;
-}
- 
-tr:last-child td:last-child {
-  border-bottom-right-radius:3px;
-}
- 
-td {
-  background:#FFFFFF;
-  padding:20px;
-  text-align:left;
-  vertical-align:middle;
-  font-weight:300;
-  font-size:13px;
-  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-  border-right: 1px solid #C1C3D1;
-}
-
-td:last-child {
-  border-right: 0px;
-}
-
-th.text-left {
-  text-align: left;
-}
-
-th.text-center {
-  text-align: center;
-}
-
-th.text-right {
-  text-align: right;
-}
-
-td.text-left {
-  text-align: left;
-}
-
-td.text-center {
-  text-align: center;
-}
-
-td.text-right {
-  text-align: right;
-}
-.text-center{
-    text-align: center;
-}
-.table{
-  widows: 100%;
-}
-    </style>
-</head>
-
+</style>
 <body>
-    <h2 class="text-center">Teneria Rubio C.A</h2>
-    <h3 class="text-center">Entrada/Salida Lineas Productos</h3>
-    <table class="table">
+  <div class="container">
+
+    <div class="d-flex justify-content-between">
+      <h2 class="text-center">Teneria Rubio C.A  </h2>
+      <p class="text-right"> Fecha: <b>{{ date('d-m-Y') }}</b></p>
+    </div>
+      
+      <img class="invoice-logo" src="C:\laragon\www\teneria-laravel\public\images\logo.png" alt="" />
+
+  </div>
+    <h3 class="text-center py-2">Entrada/Salida Lineas Productos</h3>
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th >Registrado</th>
-                <th>Empleado</th>
-                <th>Linea</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Tipo</th>
-                <th>Estatus</th>
+                <th scope="col" >Registrado</th>
+                <th scope="col">Empleado</th>
+                <th scope="col">Linea</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Estatus</th>
             </tr>
         </thead>
         <tbody>
             @foreach($lineProductLog as $data)
             <tr>
-                <td>{{ date('d-m-Y', strtotime($data->created_at)) }}</td>
+                <td scope="row">{{ date('d-m-Y', strtotime($data->created_at)) }}</td>
                 <td>{{ $data->employee_name }}</td>
                 <td>{{ $data->line_name }}</td>
                 <td>{{ $data->product_name }}</td>
